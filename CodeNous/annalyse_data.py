@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 with open("Traces.csv") as file:
     tab= np.loadtxt(file,delimiter=",")
 
-print(np.size(tab[0]))
+
 i=0
 x=np.zeros((100,10000))
 y=np.zeros((100,10000))
@@ -52,14 +52,12 @@ def plot_instant(t):
 def distance(i,j,t):
     return np.sqrt((x[i][t]-x[j][t])**2+(y[i][t]-y[j][t])**2+(z[i][t]-z[j][t])**2)
 
-def vitesse(i,t):
-    return 
 
 
 
 
 
-def plot_shortanim(d,f):
+def plot_shortanim(d,f): 
     fig = plt.figure()
     ax = fig.gca(projection='3d')
 
@@ -109,10 +107,35 @@ def plotanim():
         line_ani = animation.FuncAnimation(fig, func, frames=100, fargs=(dataSet,line), interval=50, blit=False)
         plt.show()
     
-    
+
     
 
 
+    
+def voisin(i):
+    
+    y_20=[]
+    y_40=[]
+    y_60=[]
+    for t in range(np.shape(x)[1]-1):
+        v_20=0
+        v_40=0
+        v_60=0
+        for j in range(np.shape(x)[0]-1):
+            if (distance(i,j,t)<20000):
+                v_20+=1
+            if (distance(i,j,t)<40000):
+                v_40+=1
+            if (distance(i,j,t)<60000):
+                v_60+=1
+     
+        y_20.append(v_20) 
+        y_40.append(v_40) 
+        y_60.append(v_60)        
+    plt.plot(y_20)
+    plt.plot(y_40)
+    plt.plot(y_60)
+    plt.show()
     
     
 def graph_distance(i,j):
@@ -125,6 +148,7 @@ def graph_distance(i,j):
         
 
 
+voisin(2)
 #graph_distance(2,3)
 
 
