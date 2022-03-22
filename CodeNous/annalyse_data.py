@@ -130,11 +130,13 @@ def graph_distance(i,j):
 
 #fonction permettant de générer la matrice des distances entre les 100 satellite
 # entre 0 et timemax
-def graph_conectivity(timemax):
-    distanceintersat = np.zeros((np.shape(x)[0],np.shape(x)[0],timemax))
+def graph_conectivity():
+    distanceintersat = np.zeros((np.shape(x)[0],np.shape(x)[0],np.shape(x)[1]))
     for i in range(np.shape(x)[0]):
         for j in range(np.shape(x)[0]):
-            for t in range(0, timemax):
+            for t in range(0, np.shape(x)[1]):
                 distanceintersat[i][j][t]= distance(i,j,t)
+    return distanceintersat
 
-graph_conectivity(100)
+graph_conectivity()
+
