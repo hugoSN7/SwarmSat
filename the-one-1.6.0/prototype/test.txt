@@ -61,7 +61,7 @@ Group4.movementModel = MapRouteMovement
 Group4.routeFile = data/cluster/ferryroute.wkt
 Group4.routeType = 1
 Group4.waitTime = 10, 30
-Group4.speed = 3, 5i
+Group4.speed = 3, 5
 #This is the number of hosts for the group. The initial position is choosen radomically
 Group4.nrofHosts = 5
 Group4.nrofInterfaces = 1
