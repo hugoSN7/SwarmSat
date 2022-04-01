@@ -20,3 +20,90 @@ Scenario.nrofHostGroups = 1
 
 Group.router = EpidemicRouter
 Group.bufferSize = 5M
+
+#When you use different values in this parameter, the first refers to the time that the node will be in co#ntinuously movement.  The second refres to time that the node will stop before restart the movement.
+Group.waitTime = 0, 120
+
+#nombre d'interface par nodes (pour nous 1)
+Group.nrofInterfaces = 1
+#on associe l'interface avec le nodes
+Group.interface1 = firstinterface
+
+# walking speeds
+Group.speed = 0.5, 1.5
+#Group.msgTtl = 60
+
+Group.nrofHosts = 1
+Group.nrofApplications = 0
+
+#création du seul groupe
+Group1.groupID = satellite
+Group1.bufferSize = 50M
+Group1.movementModel = MapRouteMovement
+Group1.routeFile = data/satellite.wkt
+Group1.routeType = 1
+Group1.nrofHosts = 1
+Group1.nrofInterfaces = 1
+Group1.interface1 = firstinterface
+
+## Map based movement -movement model specific settings
+#Number of movement maps described below
+MapBasedMovement.nrofMapFiles = 1
+#This is a link to wkt file created in Open Jump Software to guide the movement nodes in the simulation process
+MapBasedMovement.mapFile1 = data/satellite.wkt
+MapBasedMovement.mapFile2 = data/cluster/origin.wkt
+
+## Message creation parameters
+# How many event generators
+Events.nrof = 1
+# Class of the first event generator
+Events1.class = MessageEventGenerator
+# (following settings are specific for the MessageEventGenerator class)
+# Creation interval in seconds (one new message every 25 to 35 seconds)
+Events1.interval = 25,35
+# Message sizes (50kB - 150kB)
+Events1.size = 50k,150k
+# range of message source/destination addresses
+#le message va du node 0 au node 120
+Events1.hosts = 0,120
+# Message ID prefix
+Events1.prefix = M
+
+## Movement model settings
+# seed for movement models' pseudo random number generator (default = 0)
+MovementModel.rngSeed = 1
+# World's size for Movement Models without implicit size (width, height; meters) dans un repère cartésien
+MovementModel.worldSize = 4500, 3400
+# How long time to move hosts in the world before real simulation
+MovementModel.warmup = 1000
+
+# how many reports to load, il y a au moins 11 types de reports différents
+Report.nrofReports = 1
+# length of the warm up period (simulated seconds)
+Report.warmup = 0
+# default directory of reports (can be overridden per Report with output setting)
+Report.reportDir = reports/
+# Report classes to load
+Report.report1 = MessageStatsReport
+
+## Optimization settings -- these affect the speed of the simulation
+## see World class for details.
+Optimization.connectionAlg = 2
+Optimization.cellSizeMult = 5
+Optimization.randomizeUpdateOrder = true
+
+## GUI settings
+
+#image d'arrière plan
+GUI.UnderlayImage.fileName = data/helsinki_underlay.png
+# Image offset in pixels (x, y), Parameters for adjust the background image
+GUI.UnderlayImage.offset = 64, 20
+# Scaling factor for the image, Parameter for adjust the scale of the background image
+GUI.UnderlayImage.scale = 4.75
+# Image rotation (radians), Parameter for adjust the rotation of the background image
+GUI.UnderlayImage.rotate = -0.015
+
+# how many events to show in the log panel (default = 30)
+GUI.EventLogPanel.nrofEvents = 30
+# Regular Expression log filter (see Pattern-class from the Java API for RE-matching details)
+#GUI.EventLogPanel.REfilter = .*p[1-9]<->p[1-9]$
