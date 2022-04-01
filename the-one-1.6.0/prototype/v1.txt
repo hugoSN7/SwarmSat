@@ -1,0 +1,22 @@
+## Scenario settings
+#This is the identification of your simulation. You can choose any name.
+Scenario.name = test_1.0
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+# 43k ~= 12h
+#temps, en seconde
+Scenario.endTime = 43k
+
+
+#This is the type of the Interface that your nodes will use
+firstinterface.type = SimpleBroadcastInterface
+# transmit speed of 2 Mbps = 250kBps
+firstinterface.transmitSpeed = 250k
+firstinterface.transmitRange = 40000
+
+#This indicate the number of the groups of the hosts
+Scenario.nrofHostGroups = 1
+
+
+Group.router = EpidemicRouter
+Group.bufferSize = 5M

@@ -3,7 +3,7 @@
 Scenario.name = test_0.1
 Scenario.simulateConnections = true
 Scenario.updateInterval = 0.1
-# 43k ~= 24h
+# 43k ~= 12h
 #temps, en seconde
 Scenario.endTime = 43k
 
