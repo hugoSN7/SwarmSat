@@ -67,6 +67,7 @@ def plot_shortanim(d,f):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
+    
     plt.tight_layout()
     plt.show()
 
@@ -147,8 +148,6 @@ def graph_distance(i,j):
     plt.show()
         
 
-
-voisin(2)
 #graph_distance(2,3)
 
 
@@ -162,5 +161,55 @@ def graph_conectivity():
                 distanceintersat[i][j][t]= distance(i,j,t)
     return distanceintersat
 
-graph_conectivity()
 
+
+def save_graph_distance():
+    a = graph_conectivity(0, 10000)
+    b = np.reshape(a, [10000, 10000])
+    np.savetxt("Distance_entre_sat.csv", b, delimiter=",")
+
+def import_distance():
+    with open("./Distance_entre_sat.csv") as file:
+        b = np.loadtxt(file, delimiter=",")
+        return np.reshape(b, [100, 100, 10000])
+
+
+
+
+#permet de récupérer la liste des statellites qui reste en contact avec le satellite i dans un rayon donné 
+def lien_always(sat_i, dist_transm_max):
+    num_lien=list(range(np.shape(x)[0]))
+    num_lien.remove(sat_i)
+    for t in range(np.shape(x)[1]):
+        for j in num_lien:
+            if  distance(sat_i,j,t) > dist_transm_max :
+                num_lien.remove(j)
+    print("voisin constent de ",sat_i," :",num_lien);   
+    return num_lien   
+                
+                
+
+
+
+def cluster(distance):
+    list_cluster =[]
+    sat=list(range(np.shape(x)[0]-1))
+    for i in sat :
+        list_proche_sat= lien_always(i,distance)
+        for sat_tri in list_proche_sat :
+            sat.remove(sat_tri)
+            oui=lien_always(sat_tri,distance)
+            for new_sat in oui :
+                if new_sat not in list_proche_sat and new_sat != i :
+                    list_proche_sat.append(new_sat)
+        list_proche_sat.append(i)
+        if np.size(list_proche_sat)!=1 :
+            list_cluster.append(list_proche_sat)
+    return list_cluster
+
+
+
+def oui() :
+    groupe = cluster(60000)
+    
+    
