@@ -1,4 +1,5 @@
 from array import array
+from json import load
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -161,19 +162,17 @@ def graph_conectivity(debut, fin):
         for j in range(np.shape(x)[0]):
             for t in range(debut, fin):
                 distanceintersat[i][j][t]= distance(i,j,t)
+    np.save("Distance_entre_sat", distanceintersat)
     return distanceintersat
 
 
 # savegarde la matrice distance en .csv
 def save_graph_distance():
     a = graph_conectivity(0, 10000)
-    b = np.reshape(a, [10000, 10000])
-    np.savetxt("Distance_entre_sat.csv", b, delimiter=",")
+    
 
 def import_distance():
-    with open("./Distance_entre_sat.csv") as file:
-        b = np.loadtxt(file, delimiter=",")
-        return np.reshape(b, [100, 100, 10000])
+    return np.load("Distance_entre_sat.npy")
 
 
 
@@ -189,6 +188,8 @@ def lien_always(graph_distance, sat_i, dist_transm_max):
     return num_lien   
                 
                 
-b = import_distance()
+#b = import_distance()
+#save_graph_distance()
+#lien_always(b,20, 20000)
 
-lien_always(b,20, 20000)
+a = graph_conectivity(0,10000)
