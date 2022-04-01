@@ -1,4 +1,5 @@
 from array import array
+from cProfile import label
 from json import load
 import numpy as np
 import matplotlib.pyplot as plt
@@ -209,7 +210,26 @@ def cluster(distance):
 
 
 
-def oui() :
-    groupe = cluster(60000)
+def connection(clus,solotellite,dist,t):
+    for sat in clus :
+        if distance(sat,solotellite,t) < dist :
+            return True
+    return False
+
+def oui(distance,solotellite) :
+    groupe = cluster(distance)
+    nb=len(groupe)
+    for i in range(nb):
+        y_axis=[]
+        for t in range(np.shape(x)[1]):
+            if connection(groupe[i],solotellite,distance,t) :
+                y_axis.append(i+1)
+            else :
+                y_axis.append(0)
+        plt.plot(y_axis)
+    plt.show()
+
+for i in range(100):      
+    oui(40000,i)
     
     
