@@ -162,13 +162,13 @@ def graph_conectivity(debut, fin):
         for j in range(np.shape(x)[0]):
             for t in range(debut, fin):
                 distanceintersat[i][j][t]= distance(i,j,t)
-    np.save("Distance_entre_sat", distanceintersat)
     return distanceintersat
 
 
 # savegarde la matrice distance en .csv
 def save_graph_distance():
     a = graph_conectivity(0, 10000)
+    np.save("Distance_entre_sat", a)
     
 
 def import_distance():
