@@ -1,0 +1,145 @@
+## Scenario settings
+#This is the identification of your simulation. You can choose any name.
+Scenario.name = test_0.1
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+# 43k ~= 12h
+#temps, en seconde
+Scenario.endTime = 43k
+
+#This is the type of the Interface that your nodes will use
+firstinterface.type = SimpleBroadcastInterface
+# transmit speed of 2 Mbps = 250kBps
+firstinterface.transmitSpeed = 250k
+firstinterface.transmitRange = 10
+
+#This indicate the number of the groups of the hosts
+Scenario.nrofHostGroups = 4
+
+#####################################création générale des groupes########################
+
+# common settings for all groups
+##Parameters used in format group.parameter are applied to all groups.
+##If you need to use a different parameter in a specific group, use the format group+number of group (Ex. group1 = )
+
+########This is the routing protocol used to exchange messages between nodes. Anothet examples:
+########FirstContactRouter, EpidemicOracleRouter, DirectDeliveryRouter and SprayAndWaitRouter.
+########In this last case additional Parameters are required
+########SprayAndWaitRouter.nrofCopies = 2
+########SprayAndWaitRouter.binaryMode = true
+Group.router = EpidemicRouter
+
+Group.bufferSize = 5M
+
+#When you use different values in this parameter, the first refers to the time that the node will be in co#ntinuously movement.  The second refres to time that the node will stop before restart the movement.
+Group.waitTime = 0, 120
+
+#nombre d'interface par nodes (pour nous 1)
+Group.nrofInterfaces = 1
+#on associe l'interface avec le nodes
+Group.interface1 = firstinterface
+
+# walking speeds
+Group.speed = 0.5, 1.5
+#Group.msgTtl = 60
+
+Group.nrofHosts = 40
+Group.nrofApplications = 0
+
+
+###############################définition spécifique de chaque groupe############################
+#création du premier groupe
+Group1.groupID = p
+
+Group2.groupID = q
+Group2.clusterCenter = 600, 10
+
+# The Tram groups
+Group4.groupID = s
+Group4.bufferSize = 50M
+Group4.movementModel = MapRouteMovement
+Group4.routeFile = data/cluster/ferryroute.wkt
+Group4.routeType = 1
+Group4.waitTime = 10, 30
+Group4.speed = 3, 5i
+#This is the number of hosts for the group. The initial position is choosen radomically
+Group4.nrofHosts = 5
+Group4.nrofInterfaces = 1
+Group4.interface1 = firstinterface
+
+
+
+##################################mapping##############################################
+## Map based movement -movement model specific settings
+#Number of movement maps described below
+MapBasedMovement.nrofMapFiles = 2
+#This is a link to wkt file created in Open Jump Software to guide the movement nodes in the simulation process
+MapBasedMovement.mapFile1 = data/cluster/ferryroute.wkt
+MapBasedMovement.mapFile2 = data/cluster/origin.wkt
+
+
+##################################message#############################################
+## Message creation parameters
+# How many event generators
+Events.nrof = 1
+# Class of the first event generator
+Events1.class = MessageEventGenerator
+# (following settings are specific for the MessageEventGenerator class)
+# Creation interval in seconds (one new message every 25 to 35 seconds)
+Events1.interval = 25,35
+# Message sizes (50kB - 150kB)
+Events1.size = 50k,150k
+# range of message source/destination addresses
+#le message va du node 0 au node 120
+Events1.hosts = 0,120
+# Message ID prefix
+Events1.prefix = M
+
+
+######################################movement model##################################
+## Movement model settings
+# seed for movement models' pseudo random number generator (default = 0)
+MovementModel.rngSeed = 1
+# World's size for Movement Models without implicit size (width, height; meters) dans un repère cartésien
+MovementModel.worldSize = 4500, 3400
+# How long time to move hosts in the world before real simulation
+MovementModel.warmup = 1000
+
+
+
+#######################################report####################################
+# how many reports to load, il y a au moins 11 types de reports différents
+Report.nrofReports = 1
+# length of the warm up period (simulated seconds)
+Report.warmup = 0
+# default directory of reports (can be overridden per Report with output setting)
+Report.reportDir = reports/
+# Report classes to load
+Report.report1 = MessageStatsReport
+
+
+####################################optimization settings###########################
+## Optimization settings -- these affect the speed of the simulation
+## see World class for details.
+Optimization.connectionAlg = 2
+Optimization.cellSizeMult = 5
+Optimization.randomizeUpdateOrder = true
+
+
+##################################graphic#####################################
+## GUI settings
+
+#image d'arrière plan
+GUI.UnderlayImage.fileName = data/helsinki_underlay.png
+# Image offset in pixels (x, y), Parameters for adjust the background image
+GUI.UnderlayImage.offset = 64, 20
+# Scaling factor for the image, Parameter for adjust the scale of the background image
+GUI.UnderlayImage.scale = 4.75
+# Image rotation (radians), Parameter for adjust the rotation of the background image
+GUI.UnderlayImage.rotate = -0.015
+
+# how many events to show in the log panel (default = 30)
+GUI.EventLogPanel.nrofEvents = 30
+# Regular Expression log filter (see Pattern-class from the Java API for RE-matching details)
+#GUI.EventLogPanel.REfilter = .*p[1-9]<->p[1-9]$
+

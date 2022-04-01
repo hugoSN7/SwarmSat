@@ -1,8 +1,10 @@
 from array import array
+from json import load
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
+import pandas as pd
 
 with open("Traces.csv") as file:
     tab= np.loadtxt(file,delimiter=",")
@@ -153,25 +155,23 @@ def graph_distance(i,j):
 
 #fonction permettant de générer la matrice des distances entre les 100 satellite
 # entre 0 et timemax
-def graph_conectivity():
-    distanceintersat = np.zeros((np.shape(x)[0],np.shape(x)[0],np.shape(x)[1]))
+def graph_conectivity(debut, fin):
+    distanceintersat = np.zeros((np.shape(x)[0],np.shape(x)[0],fin-debut))
     for i in range(np.shape(x)[0]):
         for j in range(np.shape(x)[0]):
-            for t in range(0, np.shape(x)[1]):
+            for t in range(debut, fin):
                 distanceintersat[i][j][t]= distance(i,j,t)
     return distanceintersat
 
 
-
+# savegarde la matrice distance en .csv
 def save_graph_distance():
     a = graph_conectivity(0, 10000)
-    b = np.reshape(a, [10000, 10000])
-    np.savetxt("Distance_entre_sat.csv", b, delimiter=",")
+    np.save("Distance_entre_sat", a)
+    
 
 def import_distance():
-    with open("./Distance_entre_sat.csv") as file:
-        b = np.loadtxt(file, delimiter=",")
-        return np.reshape(b, [100, 100, 10000])
+    return np.load("Distance_entre_sat.npy")
 
 
 
