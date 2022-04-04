@@ -154,7 +154,7 @@ def graph_distance(i,j):
 #graph_distance(2,3)
 
 
-#fonction permettant de générer la matrice des distances entre les 100 satellite
+#fonction permettant de générer la matrice des distances entre les 100 satellites
 # entre 0 et timemax
 def graph_conectivity(debut, fin):
     distanceintersat = np.zeros((np.shape(x)[0],np.shape(x)[0],fin-debut))
