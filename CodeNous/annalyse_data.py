@@ -191,7 +191,7 @@ def lien_always(sat_i, dist_transm_max):
                 
 
 
-
+#renvoie la liste des clusters 
 def cluster(distance):
     list_cluster =[]
     sat=list(range(np.shape(x)[0]-1))
@@ -204,32 +204,38 @@ def cluster(distance):
                 if new_sat not in list_proche_sat and new_sat != i :
                     list_proche_sat.append(new_sat)
         list_proche_sat.append(i)
+        list_proche_sat.sort()
         if np.size(list_proche_sat)!=1 :
             list_cluster.append(list_proche_sat)
     return list_cluster
 
 
-
-def connection(clus,solotellite,dist,t):
+# revoie si un satellite(soloteliste) est en contact avec u cluster donné pour une distance et un instant donnée 
+def connection(clus,solotelite,dist,t):
     for sat in clus :
-        if distance(sat,solotellite,t) < dist :
+        if distance(sat,solotelite,t) < dist :
             return True
     return False
 
-def oui(distance,solotellite) :
-    groupe = cluster(distance)
+#affiche le graphe de contact d'un satelite avec les clusters (groupe) pour une distance donnée
+def oui(groupe,distance,solotelite) :
     nb=len(groupe)
     for i in range(nb):
         y_axis=[]
         for t in range(np.shape(x)[1]):
-            if connection(groupe[i],solotellite,distance,t) :
+            if connection(groupe[i],solotelite,distance,t) :
                 y_axis.append(i+1)
             else :
                 y_axis.append(0)
         plt.plot(y_axis)
+        plt.xlabel("temps")
+        plt.ylabel("numéro cluster")
+        plt.title("contact du satelite {} avec les clusters".format(solotelite))
+        
     plt.show()
 
-for i in range(100):      
-    oui(40000,i)
-    
-    
+dist=40000
+a= cluster(dist)
+
+
+oui(a,dist,6)   
