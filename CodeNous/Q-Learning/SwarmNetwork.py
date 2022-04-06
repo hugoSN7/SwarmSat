@@ -67,6 +67,10 @@ class SwarmNetwork:
     def _get_state(self):
         return self._position_to_id(self.position)
 
+    def distance_ij(self, i, j):
+         t = self.instant
+         return np.sqrt((x[i][t]-x[j][t])**2+(y[i][t]-y[j][t])**2+(z[i][t]-z[j][t])**2)
+
     def distance(self, j):
         i = self.position
         t = self.instant
@@ -223,7 +227,13 @@ class SwarmNetwork:
         ax.scatter([tx[t][self.start]], [ty[t][self.start]], [tz[t][self.start]], color = 'r', marker='<', s = 100, label='start')
         ax.scatter([tx[t][self.end]], [ty[t][self.end]], [tz[t][self.end]], color = 'g', marker='<', s = 100, label='end')
         for k in range(len(actions) - 1):
-            plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]], [ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'r')
+            d = self.distance_ij(actions[k][0], actions[k  + 1][0])
+            if (d <= 20000):
+                plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]],[ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'green', label='20km')
+            elif (d <= 40000):
+                 plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]], [ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'orange', label='40km')
+            elif (d <= 60000):
+                plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]], [ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'r', label='60km')
         ax.set_xlabel('X')
         ax.set_ylabel('Y')
         ax.set_zlabel('Z')
