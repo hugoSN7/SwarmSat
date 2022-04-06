@@ -234,8 +234,13 @@ def oui(groupe,distance,solotelite) :
         
     plt.show()
 
-dist=40000
-a= cluster(dist)
 
 
-oui(a,dist,6)   
+
+a = cluster(60000)
+b = [i for i in range(100)]
+for i in a:
+    for j in i:
+        b.remove(j)
+for i in b :
+    oui(60000, i)
