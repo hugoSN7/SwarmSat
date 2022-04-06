@@ -243,4 +243,4 @@ for i in a:
     for j in i:
         b.remove(j)
 for i in b :
-    oui(60000, i)
+    oui(a,60000, i)
