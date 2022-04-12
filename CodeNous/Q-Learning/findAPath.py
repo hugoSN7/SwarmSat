@@ -9,7 +9,7 @@ import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 
 if (len(sys.argv) != 4):
-    print("How to execute the code: \n python3 qlearning.py start end t\n\n where start is from which sat we start, end the final sat destination and t the instant")
+    print("How to execute the code: \n python3 findAPath.py start end t\n\n where start is from which sat we start, end the final sat destination and t the instant")
     exit()
 
 if (int(sys.argv[1]) < 0 or int(sys.argv[1]) >= 100):

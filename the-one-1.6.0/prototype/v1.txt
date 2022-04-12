@@ -17,7 +17,6 @@ firstinterface.transmitRange = 40000
 #This indicate the number of the groups of the hosts
 Scenario.nrofHostGroups = 1
 
-
 Group.router = EpidemicRouter
 Group.bufferSize = 5M
 
@@ -42,7 +41,7 @@ Group1.bufferSize = 50M
 Group1.movementModel = MapRouteMovement
 Group1.routeFile = data/satellite.wkt
 Group1.routeType = 1
-Group1.nrofHosts = 1
+Group1.nrofHosts = 2
 Group1.nrofInterfaces = 1
 Group1.interface1 = firstinterface
 
