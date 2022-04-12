@@ -210,7 +210,7 @@ def cluster(distance):
     return list_cluster
 
 
-# revoie si un satellite(soloteliste) est en contact avec u cluster donné pour une distance et un instant donnée 
+# revoie si un satellite(soloteliste) est en contact avec un cluster donné pour une distance et un instant donné 
 def connection(clus,solotelite,dist,t):
     for sat in clus :
         if distance(sat,solotelite,t) < dist :
@@ -218,7 +218,7 @@ def connection(clus,solotelite,dist,t):
     return False
 
 #affiche le graphe de contact d'un satellite avec les clusters (groupe) pour une distance donnée
-def oui(groupe,distance,solotelite) :
+def contact(groupe,distance,solotelite) :
     nb=len(groupe)
     for i in range(nb):
         y_axis=[]
@@ -242,7 +242,18 @@ def oui(groupe,distance,solotelite) :
 #60 km : cluster 1 : [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33, 34, 35, 39, 40, 41, 42, 44, 45, 46, 48, 49, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98]
 #                2 : [38, 61]
 
-dist=60000
+# (satellite en contact permanant avec un cluster)
+# satellite pas gentil  pour 20 km : 
+#                       pour 40 km : 2,9,35,38,45,51,60,67,70,78
+#                       pour 60 km : 4,26,43,47,85
+# (uniquement en contact avec un cluster rarement)
+# safélite  pour 20 km : 0(2),5(1),11(1),13(2),14(3),16(2),20(1),21(2),23(2),24(1),39(2),40(1),41(1),48(3),49(3),53(1),62(2),63(1),66(1),69(3),82(3),92(2),95(2),99(2)
+#           pour 40 km : 36,37,86 
+# seul      pour 20 km : 2,3,4,8,10,26,28,29,30,32,36,37,38,47,51,52,54,61,64,68,72,76,79,81,85,86,88,89,91,93,96,98
+#           pour 40 km : 54
+
+
+dist=40000
 a = cluster(dist)
 print(a)
 b = [i for i in range(100)]
@@ -250,4 +261,4 @@ for i in a:
     for j in i:
         b.remove(j)
 for i in b :
-    oui(a,dist, i)
+    contact(a,dist, i)
