@@ -217,7 +217,7 @@ def connection(clus,solotelite,dist,t):
             return True
     return False
 
-#affiche le graphe de contact d'un satelite avec les clusters (groupe) pour une distance donnée
+#affiche le graphe de contact d'un satellite avec les clusters (groupe) pour une distance donnée
 def oui(groupe,distance,solotelite) :
     nb=len(groupe)
     for i in range(nb):
@@ -234,13 +234,20 @@ def oui(groupe,distance,solotelite) :
         
     plt.show()
 
+#40 km : cluster 1 : [1, 5, 6, 7, 11, 12, 15, 18, 19, 22, 23, 27, 33, 39, 40, 41, 42, 44, 50, 55, 56, 62, 65, 68, 69, 71, 73, 74, 75, 77, 79, 80, 84, 87, 90, 94, 95, 97]
+#                2 : [28, 29]
+#                3 : [30, 57, 63, 66, 72]
+#                4 : [48, 52]
+#                5 : [88, 89, 91]
+#60 km : cluster 1 : [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33, 34, 35, 39, 40, 41, 42, 44, 45, 46, 48, 49, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98]
+#                2 : [38, 61]
 
-
-
-a = cluster(60000)
+dist=60000
+a = cluster(dist)
+print(a)
 b = [i for i in range(100)]
 for i in a:
     for j in i:
         b.remove(j)
 for i in b :
-    oui(a,60000, i)
+    oui(a,dist, i)
