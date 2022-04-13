@@ -38,6 +38,16 @@ class SwarmNetwork:
         self.success = 0
         self.counter = 0
 
+    def __init__(self, end, alea=False):
+        self.nSat = 100
+        self.end = end
+        self.instant = 0
+        self.alea = alea
+        self.generate_swarm()
+        self.start = 0
+        self.success = 0
+        self.counter = 0
+
     def _position_to_id(self, a):
         return a
 
@@ -93,6 +103,12 @@ class SwarmNetwork:
 
     def getSucess(self):
         return self.success
+
+    def getInstant(self):
+        return self.instant
+
+    def setInstant(self, instant):
+        self.instant = instant
 
     def move(self, action):
         """
