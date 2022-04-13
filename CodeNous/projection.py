@@ -23,6 +23,20 @@ while i<np.shape(tab)[0]:
     z[i//3]=tab[i+2]
     i+=3
 
+x_m = np.mean(x)
+y_m = np.mean(y)
+n = 100*10000
+xy = np.zeros((100,10000))
+for i in range(0,99):
+    for j in range(0,9999):
+        xy[i,j] = x[i,j]*y[i,j]
+    
+b = (n*np.sum(xy) - np.sum(x)*np.sum(y))/(n*np.sum(np.square(x)) + np.sum(np.square(y)))
+a = y_m -x_m*b
+print("\n b = "+str(b))
+print("\n a = "+ str(a) )
+angle = np.arctan(b)
+
 def plotall():
     fig = plt.figure()
     ax = fig.gca(projection='3d')
