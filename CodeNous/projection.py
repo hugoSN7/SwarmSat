@@ -41,16 +41,12 @@ def plotall():
 
 def plotApprox():
     fig = plt.figure()
-    ax = fig.gca(projection='2d')
 
     for j in range(np.shape(x)[0]-1):
-        ax.plot(x[j], z[j], label='Courbe')  # Tracé de la courbe 2D
+        plt.plot(x[j], z[j], label='Courbe')  # Tracé de la courbe 2D
     plt.title("Courbe des satellites")
-    ax.set_xlabel('X')
-    ax.set_ylabel('Z')
-    ax.set_xlim2d(np.min(x), np.max(x))
-    ax.set_ylim2d(np.min(z), np.max(z))
-    plt.tight_layout()
+    plt.xlabel('X')
+    plt.ylabel('Z')
     plt.show()
 #Avant rotation
 #plotall()
