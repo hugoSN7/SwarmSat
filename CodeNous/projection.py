@@ -89,4 +89,4 @@ def projection():
     
     return newDonnees
 
-plotPartiel(projection())
+#plotPartiel(projection())
