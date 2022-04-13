@@ -7,6 +7,8 @@ import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 import pandas as pd
 from mgen import rotation_around_axis
+with open("Traces.csv") as file:
+    tab= np.loadtxt(file,delimiter=",")
 
 # Determie l'angle des données par rapport au plan XZ via régression linéaire
 def determinerAngle(x,y):
@@ -65,25 +67,26 @@ def reformater(x,y,z):
     coord = [x,z]
 
     return coord
-# MAIN
-# On récupères les données
-with open("Traces.csv") as file:
-    tab= np.loadtxt(file,delimiter=",")
 
-i=0
-x=np.zeros((100,10000))
-y=np.zeros((100,10000))
-z=np.zeros((100,10000))
+def projection():
+    # On récupères les données
+    i=0
+    x=np.zeros((100,10000))
+    y=np.zeros((100,10000))
+    z=np.zeros((100,10000))
 
-while i<np.shape(tab)[0]:
-    x[i//3]=tab[i]
-    y[i//3]=tab[i+1]
-    z[i//3]=tab[i+2]
-    i+=3
+    while i<np.shape(tab)[0]:
+        x[i//3]=tab[i]
+        y[i//3]=tab[i+1]
+        z[i//3]=tab[i+2]
+        i+=3
 
-#Avant rotation
-#plotAll(x,y,z)
+    #Avant rotation
+    #plotAll(x,y,z)
 
-#Après rotation
-newDonnees = reformater(x,y,z)
-plotPartiel(newDonnees)
+    #Après rotation
+    newDonnees = reformater(x,y,z)
+    
+    return newDonnees
+
+plotPartiel(projection())
