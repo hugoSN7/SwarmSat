@@ -219,46 +219,64 @@ def connection(clus,solotelite,dist,t):
 
 #affiche le graphe de contact d'un satellite avec les clusters (groupe) pour une distance donnée
 def contact(groupe,distance,solotelite) :
-    nb=len(groupe)
-    for i in range(nb):
-        y_axis=[]
-        for t in range(np.shape(x)[1]):
-            if connection(groupe[i],solotelite,distance,t) :
-                y_axis.append(i+1)
-            else :
-                y_axis.append(0)
-        plt.plot(y_axis)
-        plt.xlabel("temps")
-        plt.ylabel("numéro cluster")
-        plt.title("contact du satelite {} avec les clusters".format(solotelite))
+    i=0
+    y_axis=[]
+    for t in range(np.shape(x)[1]):
+        if connection(groupe,solotelite,distance,t) :
+            y_axis.append(i+1)
+        else :
+            y_axis.append(0)
+    plt.plot(y_axis)
+    plt.xlabel("temps")
+    plt.ylabel("numéro cluster")
+    plt.title("contact du satelite {} avec les clusters".format(solotelite))
         
     plt.show()
 
-#40 km : cluster 1 : [1, 5, 6, 7, 11, 12, 15, 18, 19, 22, 23, 27, 33, 39, 40, 41, 42, 44, 50, 55, 56, 62, 65, 68, 69, 71, 73, 74, 75, 77, 79, 80, 84, 87, 90, 94, 95, 97]
-#                2 : [28, 29]
-#                3 : [30, 57, 63, 66, 72]
-#                4 : [48, 52]
-#                5 : [88, 89, 91]
-#60 km : cluster 1 : [0, 1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 27, 28, 29, 30, 31, 32, 33, 34, 35, 39, 40, 41, 42, 44, 45, 46, 48, 49, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98]
-#                2 : [38, 61]
+def cluster_check(cluster,distance):
+    fin = False
+    while(not fin):
+        fin = True
+        for i in range(100):
+            if i not in cluster[0]:
+                boo = True
+                for t in range(np.shape(x)[1]):
+                    if not (connection(cluster[0],i,distance,t)):
+                        boo = False
+                        
+                if boo:
+                    cluster[0].append(i)
+                    fin = False
+        cluster[0].sort()
+        print(cluster[0])
+    return cluster
 
-# (satellite en contact permanant avec un cluster)
-# satellite pas gentil  pour 20 km : 
-#                       pour 40 km : 2,9,35,38,45,51,60,67,70,78
-#                       pour 60 km : 4,26,43,47,85
-# (uniquement en contact avec un cluster rarement)
-# safélite  pour 20 km : 0(2),5(1),11(1),13(2),14(3),16(2),20(1),21(2),23(2),24(1),39(2),40(1),41(1),48(3),49(3),53(1),62(2),63(1),66(1),69(3),82(3),92(2),95(2),99(2)
-#           pour 40 km : 36,37,86 
+
+
+# 40 km : cluster : [0, 1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18, 19, 22, 23, 24, 26, 27, 30, 31, 32, 33, 35, 38, 39, 40, 41, 42, 44, 45, 46, 48, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 84, 87, 88, 89, 90, 91, 94, 95, 97, 98]
+#         jamais  : 54
+#         contact : [3, 4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 36, 37, 43, 47, 49, 53, 54, 61, 64, 76, 82, 83, 85, 86, 92, 93, 96, 99]
+
+#rejoins le cluster entre 40 et 60 :  [4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 43, 47, 49, 61, 64, 76, 82, 83, 85, 93, 96, 99]
+
+# 60 km : cluster : [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98, 99] 
+#         contact : [3, 36, 37, 53, 54, 86, 92]  
+
+#
+
 # seul      pour 20 km : 2,3,4,8,10,26,28,29,30,32,36,37,38,47,51,52,54,61,64,68,72,76,79,81,85,86,88,89,91,93,96,98
-#           pour 40 km : 54
 
 
-dist=40000
+
+dist=60000
 a = cluster(dist)
-print(a)
+clustv2=cluster_check(a,dist)[0]
+
+print(len(clustv2))
+print(clustv2)
 b = [i for i in range(100)]
-for i in a:
-    for j in i:
+for j in clustv2:
         b.remove(j)
+print(b)
 for i in b :
-    contact(a,dist, i)
+    contact(clustv2,dist, i)
