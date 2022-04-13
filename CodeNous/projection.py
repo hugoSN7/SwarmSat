@@ -62,6 +62,13 @@ def plotApprox():
     plt.xlabel('X')
     plt.ylabel('Z')
     plt.show()
+
+def reformater(angle):
+    rot = rotation_around_axis([0, 0, 1], angle)
+
+    for k in range(np.shape(x)[0]):
+        [x[k],y[k],z[k]] = rot.dot([x[k],y[k],z[k]])
+coord = [x,z]
 #Avant rotation
 #plotall()
 
@@ -73,6 +80,5 @@ for k in range(np.shape(x)[0]):
 #Après rotation
 #plotall() 
 
-coord = [x,z]
-
+reformater(-np.arctan(1.4711834))
 plotApprox()
