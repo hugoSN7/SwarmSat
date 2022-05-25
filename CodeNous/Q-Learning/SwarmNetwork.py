@@ -23,6 +23,7 @@ while i<np.shape(tab)[0]:
 #Class SwarmNetwork qui manipule l'essaim de nano satelite pour l'apprentissage
 class SwarmNetwork:
 
+    
     # l'action est de se rendre à un autre satelite
     ACTIONS = [x for x in range(100)]
 
@@ -112,7 +113,7 @@ class SwarmNetwork:
         new_s = action;
 
         #eviter de boucler à l'infini
-        if (self.counter >= 100):
+        if (self.counter >= 60):
             return self._get_state(), -1000, True, -1, False, self.ACTIONS
 
         distance = self.distance(new_s)
@@ -221,17 +222,26 @@ class SwarmNetwork:
         plt.show()
 
     def display(self, actions):
+        cluster40 = [0, 1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18, 19, 22, 23, 24, 26, 27, 30, 31, 32, 33, 35, 38, 39, 40, 41, 42, 44, 45, 46, 48, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 84, 87, 88, 89, 90, 91, 94, 95, 97, 98]
+        cluster60 = [4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 43, 47, 49, 61, 64, 76, 82, 83, 85, 93, 96, 99]
+        contact = [3, 36, 37, 53, 54, 86, 92]
         t = self.instant
         fig = plt.figure()
         ax = fig.gca(projection='3d')
         tx=np.transpose(x)
         ty=np.transpose(y)
         tz=np.transpose(z)
-        ax.scatter(tx[t], ty[t], tz[t])  # Tracé de la courbe 3D
+        for i in cluster40 :
+            ax.scatter(tx[t][i], ty[t][i], tz[t][i], color = 'green')  # Tracé de la courbe 3D
+        for i in cluster60 :
+            ax.scatter(tx[t][i], ty[t][i], tz[t][i], color = 'orange')  # Tracé de la courbe 3D
+        for i in contact :
+            ax.scatter(tx[t][i], ty[t][i], tz[t][i], color = 'red')  # Tracé de la courbe 3D
+        
         figName = "from_{}_to_{}_at_{}".format(self.start, self.end, t)
         plt.title("from {} to {} at {}".format(self.start, self.end, t))
-        ax.scatter([tx[t][self.start]], [ty[t][self.start]], [tz[t][self.start]], color = 'r', marker='<', s = 100, label='start')
-        ax.scatter([tx[t][self.end]], [ty[t][self.end]], [tz[t][self.end]], color = 'g', marker='<', s = 100, label='end')
+        ax.scatter([tx[t][self.start]], [ty[t][self.start]], [tz[t][self.start]], color = 'red', marker='<', s = 100, label='start')
+        ax.scatter([tx[t][self.end]], [ty[t][self.end]], [tz[t][self.end]], color = 'limegreen', marker='<', s = 100, label='end')
         for k in range(len(actions) - 1):
             d = self.distance_ij(actions[k][0], actions[k  + 1][0])
             if (d <= 20000):
