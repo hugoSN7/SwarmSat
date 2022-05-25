@@ -38,16 +38,6 @@ class SwarmNetwork:
         self.success = 0
         self.counter = 0
 
-    def __init__(self, end, alea=False):
-        self.nSat = 100
-        self.end = end
-        self.instant = 0
-        self.alea = alea
-        self.generate_swarm()
-        self.start = 0
-        self.success = 0
-        self.counter = 0
-
     def _position_to_id(self, a):
         return a
 
@@ -240,6 +230,33 @@ class SwarmNetwork:
         ax.scatter(tx[t], ty[t], tz[t])  # Tracé de la courbe 3D
         figName = "from_{}_to_{}_at_{}".format(self.start, self.end, t)
         plt.title("from {} to {} at {}".format(self.start, self.end, t))
+        ax.scatter([tx[t][self.start]], [ty[t][self.start]], [tz[t][self.start]], color = 'r', marker='<', s = 100, label='start')
+        ax.scatter([tx[t][self.end]], [ty[t][self.end]], [tz[t][self.end]], color = 'g', marker='<', s = 100, label='end')
+        for k in range(len(actions) - 1):
+            d = self.distance_ij(actions[k][0], actions[k  + 1][0])
+            if (d <= 20000):
+                plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]],[ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'green', label='20km')
+            elif (d <= 40000):
+                 plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]], [ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'orange', label='40km')
+            elif (d <= 60000):
+                plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]], [ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'r', label='60km')
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        ax.legend()
+        plt.tight_layout()
+        plt.show()
+
+    def displayTotal(self, actions):
+        t = self.instant
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+        tx=np.transpose(x)
+        ty=np.transpose(y)
+        tz=np.transpose(z)
+        ax.scatter(tx[t], ty[t], tz[t])  # Tracé de la courbe 3D
+        figName = "from_{}_to_{}".format(self.start, self.end)
+        plt.title("from {} to {}".format(self.start, self.end))
         ax.scatter([tx[t][self.start]], [ty[t][self.start]], [tz[t][self.start]], color = 'r', marker='<', s = 100, label='start')
         ax.scatter([tx[t][self.end]], [ty[t][self.end]], [tz[t][self.end]], color = 'g', marker='<', s = 100, label='end')
         for k in range(len(actions) - 1):
