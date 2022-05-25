@@ -56,7 +56,7 @@ if os.path.isfile(out):
 else:
     print("Q was never compute before")
     print("let's compute Q first")
-    cmd = "python3 qlearning.py {} {}".format(sys.argv[2], sys.argv[3])
+    cmd = "python3 qlearningInstant.py {} {}".format(sys.argv[2], sys.argv[3])
     os.system(cmd)
     with open(out) as file:
         Q = np.loadtxt(file,delimiter=",")

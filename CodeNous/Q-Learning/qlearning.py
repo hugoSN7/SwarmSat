@@ -26,8 +26,8 @@ nSat = 100
 Q = np.zeros([nSat, nSat])
 end = int(sys.argv[1])
 instant = int(sys.argv[2])
-out = "q/to_{}_until_{}/q_until_{}.csv".format(end, instant, instant)
-directory = "q/to_{}_until_{}".format(end, instant)
+out = "q/to_{}/q_to_{}.csv".format(end, end)
+directory = "q/to_{}".format(end)
 
 if os.path.exists("q"):
     print("directory exist")
@@ -53,12 +53,10 @@ else:
 lr = .99 #learning rate, c’est la vitesse d’apprentissage. Plus il est élevé, plus les nouvelles informations seront importantes par rapport aux anciennes.
 gamma = .99 #facteur d’actualisation (gamma), entre 0 et 1. : détermine l’importance des récompenses futures.
 num_episodes = 10000
-swarmNetwork = SwarmNetwork(end)
+swarmNetwork = SwarmNetwork(end, 0)
 
 for t in range(instant):
-    print("t : {}".format(t))
     swarmNetwork.setInstant(t)
-    print("instant {}".format(swarmNetwork.getInstant()))
     for i in range(num_episodes):
         s = swarmNetwork.reset()
         #print("start at ", swarmNetwork.getStart())
