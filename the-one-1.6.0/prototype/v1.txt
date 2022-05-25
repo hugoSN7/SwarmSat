@@ -32,30 +32,31 @@ Group.interface1 = firstinterface
 Group.speed = 0.5, 1.5
 #Group.msgTtl = 60
 
-#Group.nrofHosts = 10
-#Group.nrofApplications = 0
+Group.nrofHosts = 10
+Group.nrofApplications = 0
 
 #création du seul groupe
-Group1.groupID = satellite
-Group1.bufferSize = 50M
-Group1.movementModel = MapRouteMovement
-Group1.routeFile = data/Ltrajectoire.wkt
-Group1.routeType = 1
-Group1.nrofHosts = 20
-Group1.nrofInterfaces = 1
-Group1.interface1 = firstinterface
-Groupe1.okMaps = 1
+#Group1.groupID = satellite1
+#Group1.bufferSize = 50M
+#Group1.movementModel = MapRouteMovement
+#Group1.routeFile = data/SatTrajectoireTest.wkt
+#Group1.routeType = 1
+#Group1.nrofHosts = 10
+#Group1.nrofInterfaces = 1
+#Group1.interface1 = firstinterface
+#Groupe1.okMaps = 1
+
 
 ## Map based movement -movement model specific settings
 #Number of movement maps described below
 MapBasedMovement.nrofMapFiles = 1
 #This is a link to wkt file created in Open Jump Software to guide the movement nodes in the simulation process
-MapBasedMovement.mapFile1 = data/Ltrajectoire.wkt
+MapBasedMovement.mapFile1 = data/SatTrajectoireTest.wkt
 #MapBasedMovement.mapFile2 = data/cluster/origin.wkt
 
 ## Message creation parameters
 # How many event generators
-Events.nrof = 1
+Events.nrof = 2
 # Class of the first event generator
 Events1.class = MessageEventGenerator
 # (following settings are specific for the MessageEventGenerator class)
@@ -65,7 +66,7 @@ Events1.interval = 25,35
 Events1.size = 50k,150k
 # range of message source/destination addresses
 #le message va du node 0 au node 120 ATTENTION IL NE FAUT PAS OUBLIER DE CHANGER CE NOMBRE QUAND ON MODIFIE LE NOMBRE DE SATELLITES
-Events1.hosts = 0,500
+Events1.hosts = 0,20
 # Message ID prefix
 Events1.prefix = M
 
