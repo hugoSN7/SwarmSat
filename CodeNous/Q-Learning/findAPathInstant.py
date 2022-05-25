@@ -9,11 +9,7 @@ import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 
 if (len(sys.argv) != 4):
-<<<<<<< HEAD:CodeNous/Q-Learning/findAPathInstant.py
     print("How to execute the code: \n python3 findAPathInstant.py start end t\n\n where start is from which sat we start, end the final sat destination and t the instant")
-=======
-    print("How to execute the code: \n python3 findAPath.py start end t\n\n where start is from which sat we start, end the final sat destination and t the instant")
->>>>>>> 4533f7a952e773814d2242fe833587e406a3d3c0:CodeNous/Q-Learning/findAPath.py
     exit()
 
 if (int(sys.argv[1]) < 0 or int(sys.argv[1]) >= 100):
@@ -60,7 +56,7 @@ if os.path.isfile(out):
 else:
     print("Q was never compute before")
     print("let's compute Q first")
-    cmd = "python3 qlearning.py {} {}".format(sys.argv[2], sys.argv[3])
+    cmd = "python3 qlearningInstant.py {} {}".format(sys.argv[2], sys.argv[3])
     os.system(cmd)
     with open(out) as file:
         Q = np.loadtxt(file,delimiter=",")
