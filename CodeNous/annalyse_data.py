@@ -1,6 +1,7 @@
 from array import array
 from cProfile import label
 from json import load
+import networkx as nx
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -82,39 +83,6 @@ def func(num, dataSet, line):
     line.set_3d_properties(dataSet[2, :num])    
     return line
 
-
-def plotanim():    
-    # THE DATA POINTS
-    #t = np.arange(0,20,0.2) # This would be the z-axis ('t' means time here)
-    #x = np.cos(t)-1
-    #y = 1/2*(np.cos(2*t)-1)
-    
-    
-    # GET SOME MATPLOTLIB OBJECTS
-    fig = plt.figure()
-    ax = Axes3D(fig)
-    # AXES PROPERTIES]
-    # ax.set_xlim3d([limit0, limit1])
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-    ax.set_title('Trajectoire des satellites')
-    for j in range(2):
-    # NOTE: Can't pass empty arrays into 3d version of plot()
-        dataSet = np.array([x[j], y[j], z[j]])
-        numDataPoints = len(x[j])
-        line = plt.plot(dataSet[0], dataSet[1], dataSet[2], lw=2)[0] # For line plot
-    
-    
-    
-    # Creating the Animation object
-        line_ani = animation.FuncAnimation(fig, func, frames=100, fargs=(dataSet,line), interval=50, blit=False)
-        plt.show()
-    
-
-    
-
-
     
 def voisin(i):
     
@@ -181,14 +149,29 @@ def import_distance():
 def lien_always(sat_i, dist_transm_max):
     num_lien=list(range(np.shape(x)[0]))
     num_lien.remove(sat_i)
-    for t in range(np.shape(x)[1]):
-        for j in num_lien:
-            if  distance(sat_i,j,t) > dist_transm_max :
+    for j in num_lien:
+    
+        for t in range(np.shape(x)[1]):
+            if  distance(sat_i,j,t) < dist_transm_max :
                 num_lien.remove(j)
-    print("voisin constent de ",sat_i," :",num_lien);   
+    print("voisin de ",sat_i," :",num_lien);   
     return num_lien   
                 
-                
+#permet de récupérer la liste des statellites qui est en contact avec le satellite i dans un rayon donné pendant un pourcentage donnée
+def lien_pourcent(sat_i, dist_transm_max,pourcent):
+    num_lien=[]
+    for j in range(np.shape(x)[0]):
+        if(j==sat_i) :
+            continue
+        count = 0
+        for t in range(np.shape(x)[1]):
+            if  distance(sat_i,j,t) < dist_transm_max :
+                count +=1
+        if (count/np.shape(x)[1]>pourcent) :
+            num_lien.append(j)
+        
+    print("voisin de ",sat_i," à",pourcent, " :",num_lien);   
+    return num_lien 
 
 
 #renvoie la liste des clusters 
@@ -209,6 +192,23 @@ def cluster(distance):
             list_cluster.append(list_proche_sat)
     return list_cluster
 
+def contact_time(i,j,dist) :
+    contacttime=[]
+    debut,fin = False,False
+    for t in range(np.shape(x)[1]):
+        if  distance(i,j,t) > dist :
+            if debut : ## on vient de sortir de la distance d'émission
+                fin = True
+                fin_t = t-1
+            else : ## on attend un contact entre les 2 satellites
+                continue
+        elif not debut: ## on vient de rentrer en contact
+            debut = True
+            debut_t = t
+        if (debut & fin) :
+            debut,fin = False,False
+            contacttime.append((debut_t,fin_t))
+    return contacttime
 
 # revoie si un satellite(soloteliste) est en contact avec un cluster donné pour une distance et un instant donné 
 def connection(clus,solotelite,dist,t):
@@ -251,6 +251,36 @@ def cluster_check(cluster,distance):
         print(cluster[0])
     return cluster
 
+def getlistepasseur(satloin,dist) :
+    listpasseur=[]
+    for i in satloin :
+        for j in range(np.shape(x)[0]):
+            listtemps = contact_time(i,j,dist)
+            if (listtemps != []) :
+                listpasseur.append((i,j,listtemps))
+          
+                    
+                    
+    return listpasseur
+
+def getlistvoisin(dist,pourcent) :
+        listvoisin = []
+        for i in range(100):
+            voisins = lien_pourcent(i, dist,pourcent)
+            listvoisin.append(voisins)
+        return listvoisin
+
+def tracerNetwork(listvoisin) :
+    
+    G = nx.Graph()
+    for i in range(100):
+        G.add_nodes_from(range(100))
+    for i in range(100):
+        for j in listvoisin[i] : 
+            G.add_edge(i,j)
+    return (G)
+    
+    
 
 
 # 40 km : cluster : [0, 1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18, 19, 22, 23, 24, 26, 27, 30, 31, 32, 33, 35, 38, 39, 40, 41, 42, 44, 45, 46, 48, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 84, 87, 88, 89, 90, 91, 94, 95, 97, 98]
@@ -267,16 +297,27 @@ def cluster_check(cluster,distance):
 # seul      pour 20 km : 2,3,4,8,10,26,28,29,30,32,36,37,38,47,51,52,54,61,64,68,72,76,79,81,85,86,88,89,91,93,96,98
 
 
+satloin = [3, 36, 37, 53, 54, 86, 92]
+dist=20000
+pourcent = 0.9
 
-dist=60000
-a = cluster(dist)
-clustv2=cluster_check(a,dist)[0]
+print(getlistepasseur(satloin,dist))
 
-print(len(clustv2))
-print(clustv2)
-b = [i for i in range(100)]
-for j in clustv2:
-        b.remove(j)
-print(b)
-for i in b :
-    contact(clustv2,dist, i)
+#print(getlistepasseur(satloin,dist))
+#listvoisin = getlistvoisin(dist,pourcent)
+#graph = tracerNetwork(listvoisin)
+#nx.draw(graph,with_labels = True)
+#plt.show()
+#print(getlistvoisin(dist))
+
+
+#a = cluster(dist)
+#clustv2=cluster_check(a,dist)[0]
+
+
+#b = [i for i in range(100)]
+#for j in clustv2:
+#        b.remove(j)
+#print(b)
+#for i in b :
+#    contact(clustv2,dist, i)
