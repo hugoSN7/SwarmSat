@@ -7,7 +7,7 @@ import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 import pandas as pd
 from mgen import rotation_around_axis
-with open("Traces.csv") as file:
+with open('Traces.csv') as file:
     tab= np.loadtxt(file,delimiter=",")
 
 # Determie l'angle des données par rapport au plan XZ via régression linéaire
