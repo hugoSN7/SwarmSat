@@ -1,0 +1,20 @@
+Message stats for scenario Projet
+sim_time: 278.0000
+created: 9
+started: 666
+relayed: 665
+aborted: 0
+dropped: 0
+removed: 0
+delivered: 6
+delivery_prob: 0.6667
+response_prob: 0.0000
+overhead_ratio: 109.8333
+latency_avg: 5.0000
+latency_med: 7.0000
+hopcount_avg: 3.0000
+hopcount_med: 4
+buffertime_avg: NaN
+buffertime_med: NaN
+rtt_avg: NaN
+rtt_med: NaN

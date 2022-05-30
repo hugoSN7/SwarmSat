@@ -10,6 +10,7 @@ def generateur(donnee):
 
     for i in range (0,99):
         fichier.write("LINESTRING (")
+        fichier.write( "-400000 -700000,")
         for j in range(0,9999):
             fichier.write(str(x[i,j])+" "+str(y[i,j]))
             if (j<9999):
