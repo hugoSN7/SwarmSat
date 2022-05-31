@@ -314,13 +314,23 @@ def getroutageexterne(satexterne,dist) :
 
 def routage_externe(sat_départ,sat_arrive,temps,dist) :
     satloin = [3, 36, 37, 53, 54, 86, 92]
-    listroutage = getroutageexterne(satloin,dist)
-    ind=satloin.index(sat_arrive)
-    temps = temps % 1792
-    sat_contact = listroutage[ind][temps]
-    # appel fonction cédric route entre sat_depart, sat_contact
-    #rajouter 
     
+    
+    if(sat_arrive in satloin) :
+        ind=satloin.index(sat_arrive)
+        listroutage = getroutageexterne(satloin,dist)
+        temps = temps % 1792
+        sat_contact = listroutage[ind][temps]
+        instantane = True
+        while(sat_contact == -1 ) :
+            temps +=1
+            if (temps == 1792) :
+                temps = 0
+            sat_contact = listroutage[ind][temps]
+            instantane = False
+    
+    # appel fonction cédric route entre sat_depart, sat_arrive à l'instant temps
+    # rajouter un symbole si on attend
     
     
     
