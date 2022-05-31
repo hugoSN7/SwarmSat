@@ -1,11 +1,11 @@
 ## Scenario settings
 #This is the identification of your simulation. You can choose any name.
-Scenario.name = test_1.0
+Scenario.name = EpidemicRouter40km
 Scenario.simulateConnections = true
-Scenario.updateInterval = 0.1
+Scenario.updateInterval = 1.0
 # 43k ~= 12h
 #temps, en seconde
-Scenario.endTime = 43k
+Scenario.endTime = 4300k
 
 
 #This is the type of the Interface that your nodes will use
@@ -14,10 +14,16 @@ firstinterface.type = SimpleBroadcastInterface
 firstinterface.transmitSpeed = 250k
 firstinterface.transmitRange = 40000
 
-#This indicate the number of the groups of the hosts ici un seul
+#This indicate the number of groups
 Scenario.nrofHostGroups = 1
 
 Group.router = EpidemicRouter
+#Group.router = FirstContactRouter
+#Group.router = EpidemicOracleRouter
+#Group.router = DirectDeliveryRouter
+#Group.router = SprayAndWaitRouter
+#SprayAndWaitRouter.nrofCopies = 2
+#SprayAndWaitRouter.binaryMode = true
 Group.bufferSize = 5M
 
 #When you use different values in this parameter, the first refers to the time that the node will be in co#ntinuously movement.  The second refres to time that the node will stop before restart the movement.
@@ -29,30 +35,42 @@ Group.nrofInterfaces = 1
 Group.interface1 = firstinterface
 
 # walking speeds
-Group.speed = 0.5, 1.5
+Group.speed = 599, 600
+#Group.movementModel = ClusterMovement
 #Group.msgTtl = 60
 
-Group.nrofHosts = 10
-Group.nrofApplications = 0
+#Group.nrofHosts = 2
+#Group.nrofApplications = 0
+
+#PointsOfInterest.poiFile1 = data/trajectoire.wkt
 
 #création du seul groupe
-#Group1.groupID = satellite1
-#Group1.bufferSize = 50M
-#Group1.movementModel = MapRouteMovement
-#Group1.routeFile = data/SatTrajectoireTest.wkt
-#Group1.routeType = 1
-#Group1.nrofHosts = 10
-#Group1.nrofInterfaces = 1
-#Group1.interface1 = firstinterface
-#Groupe1.okMaps = 1
+Group1.groupID = satellite1
+Group1.bufferSize = 50M
+#Group1.movementModel = StationaryMovement
+Group1.movementModel = MapRouteMovement
+#Group1.movementModel = RandomWaypoint
+#Group1.movementModel = StationaryMovement
+#Group1.nodeLocation =  -400000, -700000
+#RandomWaypoint.mapFile = data/trajectoire.wkt
+#Group1.routeFile = data/cluster/origin.wkt
+Group1.routeFile = data/Ltrajectoire.wkt
+#Group1.clusterCenter = 400, 700
+#Group1.pois = 1, 1.0
+Group1.routeType = 1
+Group1.nrofHosts = 100
+Group1.nrofInterfaces = 1
+Group1.interface1 = firstinterface
+Groupe1.okMaps = 1
 
 
 ## Map based movement -movement model specific settings
 #Number of movement maps described below
 MapBasedMovement.nrofMapFiles = 1
 #This is a link to wkt file created in Open Jump Software to guide the movement nodes in the simulation process
-MapBasedMovement.mapFile1 = data/SatTrajectoireTest.wkt
-#MapBasedMovement.mapFile2 = data/cluster/origin.wkt
+#MapBasedMovement.mapFile1 = data/cluster/origin.wkt
+MapBasedMovement.mapFile1 = data/Ltrajectoire.wkt
+
 
 ## Message creation parameters
 # How many event generators
@@ -66,7 +84,7 @@ Events1.interval = 25,35
 Events1.size = 50k,150k
 # range of message source/destination addresses
 #le message va du node 0 au node 120 ATTENTION IL NE FAUT PAS OUBLIER DE CHANGER CE NOMBRE QUAND ON MODIFIE LE NOMBRE DE SATELLITES
-Events1.hosts = 0,20
+Events1.hosts = 0,99
 # Message ID prefix
 Events1.prefix = M
 

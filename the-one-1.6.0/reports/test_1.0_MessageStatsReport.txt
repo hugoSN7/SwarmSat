@@ -1,5 +1,5 @@
 Message stats for scenario test_1.0
-sim_time: 32.0000
+sim_time: 0.0000
 created: 0
 started: 0
 relayed: 0
