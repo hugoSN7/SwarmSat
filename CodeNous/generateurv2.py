@@ -4,7 +4,6 @@ import numpy as np
 import projection
 
 def generateur(donnee):
-    print(donnee)
     fichier = open("trajectoire.wkt", 'w')
     x=donnee[0]
     y=donnee[1]
@@ -23,7 +22,7 @@ def generateur(donnee):
         #fichier.write( "-400000 -700000,")
         for j in range(0,10):
             fichier.write(str(x[i,j])+" "+str(y[i,j]))
-            if (j<10):
+            if (j<9):
                 fichier.write(", ")
         fichier.write(")\n")
     fichier.close()
