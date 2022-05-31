@@ -8,8 +8,9 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 import pandas as pd
+import os.path
 
-with open("Traces.csv") as file:
+with open("../Traces.csv") as file:
     tab= np.loadtxt(file,delimiter=",")
 
 
@@ -311,7 +312,7 @@ def getroutageexterne(satexterne,dist) :
         routageloin.append(routage)
     return routageloin
 
-def routage_externe(sat_départ,sat_arrive,temps,dist) :
+def routage_externe(sat_depart,sat_arrive,temps,dist) :
     satloin = [3, 36, 37, 53, 54, 86, 92]
     
     
@@ -330,6 +331,8 @@ def routage_externe(sat_départ,sat_arrive,temps,dist) :
     
     # appel fonction cédric route entre sat_depart, sat_arrive à l'instant temps
     # rajouter un symbole si on attend
+    cmd = "python3 ./findAPathInstant.py {} {} {} {} {}".format(sat_depart, sat_arrive, temps, instantane, sat_contact)
+    os.system(cmd)
     
     
     
@@ -350,14 +353,19 @@ def routage_externe(sat_départ,sat_arrive,temps,dist) :
 
 satloin = [3, 36, 37, 53, 54, 86, 92]
 dist=60000
-pourcent = 1
+pourcent = 0.9
 
-print(np.shape(getroutageexterne(satloin,dist)))
 
-listvoisin = getlistvoisin(dist,pourcent)
-graph = tracerNetwork(listvoisin)
-nx.draw(graph,with_labels = True)
-plt.show()
+routage_externe(1,92,1790,dist)
+
+#print(getroutageexterne(satloin,dist))
+
+
+
+#listvoisin = getlistvoisin(dist,pourcent)
+#graph = tracerNetwork(listvoisin)
+#nx.draw(graph,with_labels = True)
+#plt.show()
 
 
 

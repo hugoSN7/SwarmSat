@@ -257,6 +257,44 @@ class SwarmNetwork:
         plt.tight_layout()
         plt.show()
 
+    def displayNotIstant(self, actions, idContact):
+        cluster40 = [0, 1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18, 19, 22, 23, 24, 26, 27, 30, 31, 32, 33, 35, 38, 39, 40, 41, 42, 44, 45, 46, 48, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 84, 87, 88, 89, 90, 91, 94, 95, 97, 98]
+        cluster60 = [4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 43, 47, 49, 61, 64, 76, 82, 83, 85, 93, 96, 99]
+        contact = [3, 36, 37, 53, 54, 86, 92]
+        t = self.instant
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+        tx=np.transpose(x)
+        ty=np.transpose(y)
+        tz=np.transpose(z)
+        for i in cluster40 :
+            ax.scatter(tx[t][i], ty[t][i], tz[t][i], color = 'green')  # Tracé de la courbe 3D
+        for i in cluster60 :
+            ax.scatter(tx[t][i], ty[t][i], tz[t][i], color = 'orange')  # Tracé de la courbe 3D
+        for i in contact :
+            ax.scatter(tx[t][i], ty[t][i], tz[t][i], color = 'red')  # Tracé de la courbe 3D
+        
+        figName = "from {} to {} by {} at {}".format(self.start, self.end, idContact, t)
+        plt.title("from {} to {} by {} at {}".format(self.start, self.end, idContact, t))
+        ax.scatter([tx[t][self.start]], [ty[t][self.start]], [tz[t][self.start]], color = 'red', marker='<', s = 100, label='start')
+        ax.scatter([tx[t][self.end]], [ty[t][self.end]], [tz[t][self.end]], color = 'limegreen', marker='<', s = 100, label='end')
+        ax.scatter([tx[t][idContact]], [ty[t][idContact]], [tz[t][idContact]], color = 'blue', marker='<', s = 100, label='sat contact')
+        
+        for k in range(len(actions) - 1):
+            d = self.distance_ij(actions[k][0], actions[k  + 1][0])
+            if (d <= 20000):
+                plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]],[ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'green', label='20km')
+            elif (d <= 40000):
+                 plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]], [ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'orange', label='40km')
+            elif (d <= 60000):
+                plt.plot([tx[t][actions[k][0]], tx[t][actions[k + 1][0]]], [ty[t][actions[k][0]], ty[t][actions[k + 1][0]]], [tz[t][actions[k][0]], tz[t][actions[k + 1][0]]], color = 'r', label='60km')
+        ax.set_xlabel('X')
+        ax.set_ylabel('Y')
+        ax.set_zlabel('Z')
+        ax.legend()
+        plt.tight_layout()
+        plt.show()
+
     def displayTotal(self, actions):
         t = self.instant
         fig = plt.figure()
