@@ -17,7 +17,7 @@ cols = len(tab[0])
 
 for i in range (0,rows-1, 3):
     fichier.write("LINESTRING (")
-    fichier.write( "-400000 -700000,")
+    fichier.write( "-400000.5691220134 -2014507.6445439574,")
     for j in range(0,cols-1):
         fichier.write(str(tab[i,j])+" "+str(tab[i+2,j]))
         if (j<cols-2):

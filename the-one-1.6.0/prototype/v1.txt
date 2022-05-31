@@ -1,6 +1,6 @@
 ## Scenario settings
 #This is the identification of your simulation. You can choose any name.
-Scenario.name = Projet
+Scenario.name = EpidemicRouter40km
 Scenario.simulateConnections = true
 Scenario.updateInterval = 1.0
 # 43k ~= 12h
@@ -12,7 +12,7 @@ Scenario.endTime = 4300k
 firstinterface.type = SimpleBroadcastInterface
 # transmit speed of 2 Mbps = 250kBps
 firstinterface.transmitSpeed = 250k
-firstinterface.transmitRange = 39000
+firstinterface.transmitRange = 40000
 
 #This indicate the number of groups
 Scenario.nrofHostGroups = 1
@@ -35,14 +35,14 @@ Group.nrofInterfaces = 1
 Group.interface1 = firstinterface
 
 # walking speeds
-Group.speed = 299, 300
+Group.speed = 599, 600
 #Group.movementModel = ClusterMovement
 #Group.msgTtl = 60
 
 #Group.nrofHosts = 2
 #Group.nrofApplications = 0
 
-#PointsOfInterest.poiFile1 = data/Ltrajectoire.wkt
+#PointsOfInterest.poiFile1 = data/trajectoire.wkt
 
 #création du seul groupe
 Group1.groupID = satellite1
@@ -52,11 +52,12 @@ Group1.movementModel = MapRouteMovement
 #Group1.movementModel = RandomWaypoint
 #Group1.movementModel = StationaryMovement
 #Group1.nodeLocation =  -400000, -700000
-#RandomWaypoint.mapFile = data/Ltrajectoire.wkt
+#RandomWaypoint.mapFile = data/trajectoire.wkt
+#Group1.routeFile = data/cluster/origin.wkt
 Group1.routeFile = data/Ltrajectoire.wkt
 #Group1.clusterCenter = 400, 700
 #Group1.pois = 1, 1.0
-Group1.routeType = 2
+Group1.routeType = 1
 Group1.nrofHosts = 100
 Group1.nrofInterfaces = 1
 Group1.interface1 = firstinterface
@@ -67,8 +68,9 @@ Groupe1.okMaps = 1
 #Number of movement maps described below
 MapBasedMovement.nrofMapFiles = 1
 #This is a link to wkt file created in Open Jump Software to guide the movement nodes in the simulation process
+#MapBasedMovement.mapFile1 = data/cluster/origin.wkt
 MapBasedMovement.mapFile1 = data/Ltrajectoire.wkt
-#MapBasedMovement.mapFile2 = data/cluster/origin.wkt
+
 
 ## Message creation parameters
 # How many event generators
