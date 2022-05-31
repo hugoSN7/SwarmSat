@@ -8,8 +8,18 @@ def generateur(donnee):
     x=donnee[0]
     y=donnee[1]
 
-    for i in range (0,99):
+    #création d'un point de départ
+    x_mean_start = np.array([np.mean(x.T[0]) for i in range(100)])
+    y_mean_start = np.array([np.mean(y.T[0]) for i in range(100)])
+    
+    # ajout de ce point dans les matrices
+    x = np.c_[x_mean_start,x]
+    y = np.c_[y_mean_start,y]
+
+
+    for i in range (0,100):
         fichier.write("LINESTRING (")
+        fichier.write( "-400000 -700000,")
         for j in range(0,9999):
             fichier.write(str(x[i,j])+" "+str(y[i,j]))
             if (j<9999):
