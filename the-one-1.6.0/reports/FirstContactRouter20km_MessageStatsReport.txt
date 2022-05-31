@@ -1,0 +1,20 @@
+Message stats for scenario FirstContactRouter20km
+sim_time: 10000.0000
+created: 337
+started: 10141
+relayed: 10139
+aborted: 2
+dropped: 0
+removed: 10139
+delivered: 317
+delivery_prob: 0.9407
+response_prob: 0.0000
+overhead_ratio: 30.9842
+latency_avg: 325.6278
+latency_med: 51.0000
+hopcount_avg: 29.1861
+hopcount_med: 19
+buffertime_avg: 12.0971
+buffertime_med: 2.0000
+rtt_avg: NaN
+rtt_med: NaN
