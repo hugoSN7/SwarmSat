@@ -1,3 +1,4 @@
+from ctypes.wintypes import BOOLEAN
 from SwarmNetwork import *
 import random
 import os.path
@@ -8,8 +9,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 
-if (len(sys.argv) != 4):
-    print("How to execute the code: \n python3 findAPathInstant.py start end t\n\n where start is from which sat we start, end the final sat destination and t the instant")
+if (len(sys.argv) != 6):
+    print("How to execute the code: \n python3 findAPathInstant.py start end t instantane Id_Contact\n\n where start is from which sat we start, end the final sat destination and t the instant")
     exit()
 
 if (int(sys.argv[1]) < 0 or int(sys.argv[1]) >= 100):
@@ -23,6 +24,14 @@ if (int(sys.argv[2]) < 0 or int(sys.argv[2]) >= 100):
 if (int(sys.argv[3]) < 0 or int(sys.argv[3]) >= 10000):
     print("t has to be between 0 and 9999")
     exit()
+
+
+if (sys.argv[4] == "True"):
+    instantane = True
+else:
+    instantane = False
+
+idContact = int(sys.argv[5])
 
 print("Find a way from {} to {} at {}".format(sys.argv[1], sys.argv[2], sys.argv[3]))
 
@@ -81,5 +90,9 @@ while True:
         break
     if d == True:
         break
+
 swarmNetwork.displayPath(states)
-swarmNetwork.display(states)
+if (instantane):
+    swarmNetwork.display(states)
+else:
+    swarmNetwork.displayNotIstant(states, idContact)
