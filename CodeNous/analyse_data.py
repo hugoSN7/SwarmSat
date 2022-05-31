@@ -312,7 +312,19 @@ def getroutageexterne(satexterne,dist) :
         routageloin.append(routage)
     return routageloin
 
-
+def routage_externe(sat_départ,sat_arrive,temps,dist) :
+    satloin = [3, 36, 37, 53, 54, 86, 92]
+    listroutage = getroutageexterne(satloin,dist)
+    ind=satloin.index(sat_arrive)
+    temps = temps % 1792
+    sat_contact = listroutage[ind][temps]
+    # appel fonction cédric route entre sat_depart, sat_contact
+    #rajouter 
+    
+    
+    
+    
+    
     # 40 km : cluster : [0, 1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18, 19, 22, 23, 24, 26, 27, 30, 31, 32, 33, 35, 38, 39, 40, 41, 42, 44, 45, 46, 48, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 84, 87, 88, 89, 90, 91, 94, 95, 97, 98]
     #         jamais  : 54
     #         contact : [3, 4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 36, 37, 43, 47, 49, 53, 54, 61, 64, 76, 82, 83, 85, 86, 92, 93, 96, 99]
