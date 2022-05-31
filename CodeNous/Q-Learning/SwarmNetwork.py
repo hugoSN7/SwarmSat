@@ -111,7 +111,7 @@ class SwarmNetwork:
             raise Exception("Invalid action")
 
         new_s = action;
-
+        
         #eviter de boucler à l'infini
         if (self.counter >= 60):
             return self._get_state(), -1000, True, -1, False, self.ACTIONS
