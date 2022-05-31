@@ -161,17 +161,20 @@ def lien_always(sat_i, dist_transm_max):
 #permet de récupérer la liste des statellites qui est en contact avec le satellite i dans un rayon donné pendant un pourcentage donnée
 def lien_pourcent(sat_i, dist_transm_max,pourcent):
     num_lien=[]
-    for j in range(np.shape(x)[0]):
-        if(j==sat_i) :
-            continue
-        count = 0
-        for t in range(1792):
-            if  distance(sat_i,j,t) < dist_transm_max :
-                count +=1
-        if (count/np.shape(x)[1]>pourcent) :
-            num_lien.append(j)
-        
-    print("voisin de ",sat_i," à",pourcent, " :",num_lien);   
+    if (pourcent == 1) :
+        num_lien=lien_always(sat_i,dist_transm_max)
+    else :
+        for j in range(np.shape(x)[0]):
+            if(j==sat_i) :
+                continue
+            count = 0
+            for t in range(1792):
+                if  distance(sat_i,j,t) < dist_transm_max :
+                    count +=1
+            if (count/np.shape(x)[1]>pourcent) :
+                num_lien.append(j)
+            
+        print("voisin de ",sat_i," à",pourcent, " :",num_lien);   
     return num_lien 
 
 
@@ -351,15 +354,15 @@ def routage_externe(sat_départ,sat_arrive,temps,dist) :
 
 satloin = [3, 36, 37, 53, 54, 86, 92]
 dist=60000
-pourcent = 0.8
+pourcent = 0.9
 
 print(np.shape(getroutageexterne(satloin,dist)))
 
-#listvoisin = getlistvoisin(dist,pourcent)
-#graph = tracerNetwork(listvoisin)
-#nx.draw(graph,with_labels = True)
-#plt.show()
-#print(getlistvoisin(dist))
+listvoisin = getlistvoisin(dist,pourcent)
+graph = tracerNetwork(listvoisin)
+nx.draw(graph,with_labels = True)
+plt.show()
+
 
 
 #a = cluster(dist)
