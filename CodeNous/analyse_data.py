@@ -1,5 +1,6 @@
 from array import array
 from cProfile import label
+from dis import dis
 from json import load
 import networkx as nx
 import numpy as np
@@ -151,7 +152,7 @@ def lien_always(sat_i, dist_transm_max):
     num_lien.remove(sat_i)
     for j in num_lien:
     
-        for t in range(np.shape(x)[1]):
+        for t in range(1792):
             if  distance(sat_i,j,t) < dist_transm_max :
                 num_lien.remove(j)
     print("voisin de ",sat_i," :",num_lien);   
@@ -164,7 +165,7 @@ def lien_pourcent(sat_i, dist_transm_max,pourcent):
         if(j==sat_i) :
             continue
         count = 0
-        for t in range(np.shape(x)[1]):
+        for t in range(1792):
             if  distance(sat_i,j,t) < dist_transm_max :
                 count +=1
         if (count/np.shape(x)[1]>pourcent) :
@@ -195,7 +196,7 @@ def cluster(distance):
 def contact_time(i,j,dist) :
     contacttime=[]
     debut,fin = False,False
-    for t in range(np.shape(x)[1]):
+    for t in range(1792):
         if  distance(i,j,t) > dist :
             if debut : ## on vient de sortir de la distance d'émission
                 fin = True
@@ -254,11 +255,13 @@ def cluster_check(cluster,distance):
 def getlistepasseur(satloin,dist) :
     listpasseur=[]
     for i in satloin :
+        listtemp = []
         for j in range(np.shape(x)[0]):
             listtemps = contact_time(i,j,dist)
             if (listtemps != []) :
-                listpasseur.append((i,j,listtemps))
-          
+                for interval in listtemps :
+                    listtemp.append([i,j,interval[1]-interval[0],interval[0],interval[1]])
+        listpasseur.append(listtemp)  
                     
                     
     return listpasseur
@@ -280,30 +283,56 @@ def tracerNetwork(listvoisin) :
             G.add_edge(i,j)
     return (G)
     
-    
+
+def getroutageexterne(satexterne,dist) :
+    passeur = getlistepasseur(satexterne,dist)
+    time = passeur
+    i = 0
+
+    for sat_loin in passeur : 
+        
+        time[i] = sorted(sat_loin,key=lambda sat_loin : sat_loin[2])
+        time[i].reverse()
+        i+=1
+    routageloin = []
+    for bestcontact in time :
+        routage= [-1]*1792
+        while bestcontact != [] :
+            oui=bestcontact[0]
+            for i in range(oui[3],oui[4]) :
+                routage[i] = oui[1]
+            bestcontact.pop(0)
+            for autrecontact in bestcontact :
+                if (autrecontact[3]>oui[3] & autrecontact[4]<oui[4]) :
+                    bestcontact.remove(autrecontact)
+                elif (autrecontact[3]>oui[3]) :
+                    autrecontact[3] = oui[4] + 1
+                elif (autrecontact[4]<oui[4]) :
+                    autrecontact[4] = oui[3] - 1
+        routageloin.append(routage)
+    return routageloin
 
 
-# 40 km : cluster : [0, 1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18, 19, 22, 23, 24, 26, 27, 30, 31, 32, 33, 35, 38, 39, 40, 41, 42, 44, 45, 46, 48, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 84, 87, 88, 89, 90, 91, 94, 95, 97, 98]
-#         jamais  : 54
-#         contact : [3, 4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 36, 37, 43, 47, 49, 53, 54, 61, 64, 76, 82, 83, 85, 86, 92, 93, 96, 99]
+    # 40 km : cluster : [0, 1, 2, 5, 6, 7, 8, 9, 11, 12, 15, 16, 17, 18, 19, 22, 23, 24, 26, 27, 30, 31, 32, 33, 35, 38, 39, 40, 41, 42, 44, 45, 46, 48, 50, 51, 52, 55, 56, 57, 58, 59, 60, 62, 63, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 77, 78, 79, 80, 81, 84, 87, 88, 89, 90, 91, 94, 95, 97, 98]
+    #         jamais  : 54
+    #         contact : [3, 4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 36, 37, 43, 47, 49, 53, 54, 61, 64, 76, 82, 83, 85, 86, 92, 93, 96, 99]
 
-# rejoins le cluster entre 40 et 60 :  [4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 43, 47, 49, 61, 64, 76, 82, 83, 85, 93, 96, 99]
+    # rejoins le cluster entre 40 et 60 :  [4, 10, 13, 14, 20, 21, 25, 28, 29, 34, 43, 47, 49, 61, 64, 76, 82, 83, 85, 93, 96, 99]
 
-# 60 km : cluster : [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98, 99] 
-#         contact : [3, 36, 37, 53, 54, 86, 92]  
+    # 60 km : cluster : [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 87, 88, 89, 90, 91, 93, 94, 95, 96, 97, 98, 99] 
+    #         contact : [3, 36, 37, 53, 54, 86, 92]  
 
-#
+    #
 
-# seul      pour 20 km : 2,3,4,8,10,26,28,29,30,32,36,37,38,47,51,52,54,61,64,68,72,76,79,81,85,86,88,89,91,93,96,98
+    # seul      pour 20 km : 2,3,4,8,10,26,28,29,30,32,36,37,38,47,51,52,54,61,64,68,72,76,79,81,85,86,88,89,91,93,96,98
 
 
 satloin = [3, 36, 37, 53, 54, 86, 92]
-dist=20000
-pourcent = 0.9
+dist=60000
+pourcent = 0.8
 
-print(getlistepasseur(satloin,dist))
+print(np.shape(getroutageexterne(satloin,dist)))
 
-#print(getlistepasseur(satloin,dist))
 #listvoisin = getlistvoisin(dist,pourcent)
 #graph = tracerNetwork(listvoisin)
 #nx.draw(graph,with_labels = True)
