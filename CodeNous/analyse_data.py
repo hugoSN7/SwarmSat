@@ -23,7 +23,7 @@ while i<np.shape(tab)[0]:
     y[i//3]=tab[i+1]
     z[i//3]=tab[i+2]
     i+=3
-
+#trace le graphe de tous les satellites sur l'ensemble des points
 def plotall():
     fig = plt.figure()
     ax = fig.gca(projection='3d')
@@ -40,6 +40,7 @@ def plotall():
     plt.tight_layout()
     plt.show()
 
+#affiche les satellites à un instan donné
 def plot_instant(t):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
@@ -55,6 +56,7 @@ def plot_instant(t):
     plt.tight_layout()
     plt.show()
 
+#calcule la distance entre 2 points à un instant t
 def distance(i,j,t):
     return np.sqrt((x[i][t]-x[j][t])**2+(y[i][t]-y[j][t])**2+(z[i][t]-z[j][t])**2)
 
@@ -62,7 +64,7 @@ def distance(i,j,t):
 
 
 
-
+#trace affiche la trajectoire de l'ensemble dessatellites entre 2 instants (d et f)
 def plot_shortanim(d,f): 
     fig = plt.figure()
     ax = fig.gca(projection='3d')
@@ -79,13 +81,8 @@ def plot_shortanim(d,f):
 
 
 
-def func(num, dataSet, line):
-        # NOTE: there is no .set_data() for 3 dim data...
-    line.set_data(dataSet[0:2, :num])    
-    line.set_3d_properties(dataSet[2, :num])    
-    return line
 
-    
+#affiche le nombre de voisin d'un satellite pour les 3 valeurs de distance    
 def voisin(i):
     
     y_20=[]
@@ -111,7 +108,8 @@ def voisin(i):
     plt.plot(y_60)
     plt.show()
     
-    
+
+#affiche la distance entre i et j en fonction du temps
 def graph_distance(i,j):
     axis_y=[]
     axis_x=range(np.shape(x)[1])
@@ -121,7 +119,7 @@ def graph_distance(i,j):
     plt.show()
         
 
-#graph_distance(2,3)
+
 
 
 #fonction permettant de générer la matrice des distances entre les 100 satellites
@@ -135,28 +133,15 @@ def graph_conectivity(debut, fin):
     return distanceintersat
 
 
-# savegarde la matrice distance en .csv
-def save_graph_distance():
-    a = graph_conectivity(0, 10000)
-    np.save("Distance_entre_sat", a)
-    
-
-def import_distance():
-    return np.load("Distance_entre_sat.npy")
-
-
-
-
 #permet de récupérer la liste des statellites qui reste en contact avec le satellite i dans un rayon donné 
 def lien_always(sat_i, dist_transm_max):
     num_lien=list(range(np.shape(x)[0]))
     num_lien.remove(sat_i)
-    for j in num_lien:
-    
-        for t in range(1792):
+    for t in range(np.shape(x)[1]):
+        for j in num_lien:
             if  distance(sat_i,j,t) > dist_transm_max :
                 num_lien.remove(j)
-                break
+            continue
     print("voisin de ",sat_i," :",num_lien);   
     return num_lien   
                 
@@ -179,9 +164,9 @@ def lien_pourcent(sat_i, dist_transm_max,pourcent):
 def cluster(distance):
     list_cluster =[]
     sat=list(range(np.shape(x)[0]-1))
-    for i in sat :
-        list_proche_sat= lien_always(i,distance)
-        for sat_tri in list_proche_sat :
+    for i in sat : 
+        list_proche_sat= lien_always(i,distance) #pour chaque satellite on récupère ses voisins
+        for sat_tri in list_proche_sat : # puis on récupère les voisins des voisins et ainsi de suite
             sat.remove(sat_tri)
             oui=lien_always(sat_tri,distance)
             for new_sat in oui :
@@ -193,6 +178,7 @@ def cluster(distance):
             list_cluster.append(list_proche_sat)
     return list_cluster
 
+#renvoie la liste des temps ou les satellites i et j sont en contact pour une distance donnée
 def contact_time(i,j,dist) :
     contacttime=[]
     debut,fin = False,False
@@ -211,7 +197,7 @@ def contact_time(i,j,dist) :
             contacttime.append((debut_t,fin_t))
     return contacttime
 
-# revoie si un satellite(soloteliste) est en contact avec un cluster donné pour une distance et un instant donné 
+# revoie si un satellite(sateliste éloigné) est en contact avec un cluster donné pour une distance et un instant donné 
 def connection(clus,solotelite,dist,t):
     for sat in clus :
         if distance(sat,solotelite,t) < dist :
@@ -234,6 +220,7 @@ def contact(groupe,distance,solotelite) :
         
     plt.show()
 
+#cherche les satellites qui reste en contact avec le cluster mais qui change de contact (satellite de périphérie)
 def cluster_check(cluster,distance):
     fin = False
     while(not fin):
@@ -252,6 +239,7 @@ def cluster_check(cluster,distance):
         print(cluster[0])
     return cluster
 
+#récupère la liste des satellites qui sont en contact avec les satellites éloignés sour la forme (sat_loin,sat_contact,temps contact,debut contact,fin_contact)
 def getlistepasseur(satloin,dist) :
     listpasseur=[]
     for i in satloin :
@@ -266,6 +254,8 @@ def getlistepasseur(satloin,dist) :
                     
     return listpasseur
 
+
+#renvoie les differents contacts entre les satellites pour un pourcentage de contact et une distance donnée
 def getlistvoisin(dist,pourcent) :
         listvoisin = []
         for i in range(100):
@@ -273,6 +263,7 @@ def getlistvoisin(dist,pourcent) :
             listvoisin.append(voisins)
         return listvoisin
 
+#trace le graphe de contact des voisins proche à un pourcentage donnée
 def tracerNetwork(listvoisin) :
     
     G = nx.Graph()
@@ -283,7 +274,7 @@ def tracerNetwork(listvoisin) :
             G.add_edge(i,j)
     return (G)
     
-
+##renvoie un tableau qui permet de savoir quel satellite va etre en contact avec un satellite éloigné (routageloin[sat_loin][temps] renvoie le voisin de sat_loin s'il exsite sinon -1)
 def getroutageexterne(satexterne,dist) :
     passeur = getlistepasseur(satexterne,dist)
     time = passeur
@@ -298,20 +289,20 @@ def getroutageexterne(satexterne,dist) :
     for bestcontact in time :
         routage= [-1]*1792
         while bestcontact != [] :
-            oui=bestcontact[0]
-            for i in range(oui[3],oui[4]) :
-                routage[i] = oui[1]
+            contacttemp=bestcontact[0]
+            for i in range(contacttemp[3],contacttemp[4]) :
+                routage[i] = contacttemp[1]
             bestcontact.pop(0)
             for autrecontact in bestcontact :
-                if (autrecontact[3]>oui[3] & autrecontact[4]<oui[4]) :
+                if (autrecontact[3]>contacttemp[3] & autrecontact[4]<contacttemp[4]) :
                     bestcontact.remove(autrecontact)
-                elif (autrecontact[3]>oui[3]) :
-                    autrecontact[3] = oui[4] + 1
-                elif (autrecontact[4]<oui[4]) :
-                    autrecontact[4] = oui[3] - 1
+                elif (autrecontact[3]>contacttemp[3]) :
+                    autrecontact[3] = contacttemp[4] + 1
+                elif (autrecontact[4]<contacttemp[4]) :
+                    autrecontact[4] = contacttemp[3] - 1
         routageloin.append(routage)
     return routageloin
-
+#affiche le routage entre sat_depart (appartenant au coeur) et sat_arrive à l'instant t et avec la distance dist pour le bon en dehors du cluster 
 def routage_externe(sat_depart,sat_arrive,temps,dist) :
     satloin = [3, 36, 37, 53, 54, 86, 92]
     
@@ -356,10 +347,9 @@ dist=60000
 pourcent = 0.9
 
 
-routage_externe(1,92,1790,dist)
+#routage_externe(1,92,1790,dist)
 
 #print(getroutageexterne(satloin,dist))
-
 
 
 #listvoisin = getlistvoisin(dist,pourcent)
@@ -369,13 +359,13 @@ routage_externe(1,92,1790,dist)
 
 
 
-#a = cluster(dist)
-#clustv2=cluster_check(a,dist)[0]
+a = cluster(dist)
+clustv2=cluster_check(a,dist)[0]
 
 
-#b = [i for i in range(100)]
-#for j in clustv2:
-#        b.remove(j)
-#print(b)
-#for i in b :
-#    contact(clustv2,dist, i)
+b = [i for i in range(100)]
+for j in clustv2:
+        b.remove(j)
+print(b)
+for i in b :
+    contact(clustv2,dist, i)
