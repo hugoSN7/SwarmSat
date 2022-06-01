@@ -1,0 +1,20 @@
+Message stats for scenario DirectDeliveryRouter40km
+sim_time: 10000.0000
+created: 337
+started: 318
+relayed: 318
+aborted: 0
+dropped: 0
+removed: 0
+delivered: 318
+delivery_prob: 0.9436
+response_prob: 0.0000
+overhead_ratio: 0.0000
+latency_avg: 472.3270
+latency_med: 198.0000
+hopcount_avg: 1.0000
+hopcount_med: 1
+buffertime_avg: NaN
+buffertime_med: NaN
+rtt_avg: NaN
+rtt_med: NaN
